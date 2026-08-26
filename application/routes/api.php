@@ -13,6 +13,11 @@ Route::prefix("/auth")
         Route::post("/register", [AuthController::class, "register"])
             ->name("register")
             ->middleware(["throttle:reg"]);
+        Route::post("/login", [AuthController::class, "login"])
+            ->name("login")
+            ->middleware(["throttle:login"]);
+        Route::post("verify", [AuthController::class, "verifyEmail"])
+            ->name("verify");
     });
 
 Route::get('/user', function (Request $request) {

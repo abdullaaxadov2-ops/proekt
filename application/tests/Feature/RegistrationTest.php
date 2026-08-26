@@ -3,20 +3,24 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
 use Tests\TestCase;
+use Tests\Traits\WithAuditLogs;
 
 class RegistrationTest extends TestCase
 {
     use WithFaker;
     use RefreshDatabase;
+    use WithAuditLogs;
     /**
      * A basic feature test example.
      */
     public function testSuccessRegistration(): void
     {
+        \Event::fake();
         $email = $this->faker->email();
         $password = "123456";
         $response = $this->post('/api/auth/register', [
@@ -29,6 +33,8 @@ class RegistrationTest extends TestCase
         $user = User::where("email", $email)->first();
         $this->assertTrue(\Hash::check($password, $user->password));
         $this->assertEquals(Str::lower($email), $user->email);
+        \Event::assertDispatched(Registered::class);
+        $this->assertLog("registration", $user->id);
     }
 
     public function testInvalidRegistrationData(): void
