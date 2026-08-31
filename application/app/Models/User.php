@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable(['email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
@@ -37,5 +38,10 @@ class User extends Authenticatable
         if (!Hash::check($password, $this->password)) {
             throw new \Exception('Wrong password');
         }
+    }
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
     }
 }
