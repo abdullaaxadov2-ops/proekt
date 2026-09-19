@@ -11,7 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Enums\UserRole;
 
 #[Fillable(['email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
@@ -28,6 +28,8 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
+            'role' => UserRole::class,
+            'is_blocked' => 'boolean',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
@@ -40,8 +42,18 @@ class User extends Authenticatable
         }
     }
 
-    public function tickets()
+    public function isAdmin(): bool
     {
-        return $this->hasMany(Ticket::class);
+        return $this->role === UserRole::Admin;
+    }
+
+    public function isOrganiser(): bool
+    {
+        return $this->role === UserRole::Organiser;
+    }
+
+    public function isParticipant(): bool
+    {
+        return $this->role === UserRole::Participant;
     }
 }
