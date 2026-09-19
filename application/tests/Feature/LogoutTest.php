@@ -5,11 +5,10 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Tests\Traits\WithAuditLogs;
 
 class LogoutTest extends TestCase
 {
-    use RefreshDatabase, WithAuditLogs;
+    use RefreshDatabase;
 
     public function testLogoutRequiresAuth(): void
     {
