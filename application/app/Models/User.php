@@ -42,6 +42,12 @@ class User extends Authenticatable
         }
     }
 
+    public function changePassword(string $newPassword): void
+    {
+        $this->password = $newPassword;
+        $this->save();
+    }
+
     public function isAdmin(): bool
     {
         return $this->role === UserRole::Admin;
