@@ -13,14 +13,14 @@ class ProfileController extends Controller
         return $request->user();
     }
 
-    public function updatePassword(ChangePasswordRequest $request)
+    public function changePassword(ChangePasswordRequest $request)
     {
         $request->user()->changePassword($request->new_password);
         return ["success" => true];
 
     }
 
-    public function updateProfileName(UpdateProfileRequest $request)
+    public function changeProfileName(UpdateProfileRequest $request)
     {
         $user = $request->user();
         $user->update(['name' => $request->name]);
