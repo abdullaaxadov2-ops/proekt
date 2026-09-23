@@ -2,8 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HealthController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\UserController;
 
 Route::get("/health", HealthController::class);
 
@@ -23,6 +24,10 @@ Route::prefix("/auth")
             ->middleware("auth:sanctum");
     });
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::middleware("auth:sanctum")->group(function () {
+    Route::get("/me", [ProfileController::class, "me"]);
+    Route::patch("/me/password", [ProfileController::class, "changePassword"]);
+    Route::patch("/me/name", [ProfileController::class, "changeProfileName"]);
+    Route::patch("/admin/users/{user}/role", [UserController::class, "changeRole"]);
+
+});
