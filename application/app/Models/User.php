@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 use App\Enums\UserRole;
 
-#[Fillable(['email', 'password'])]
+#[Fillable(['email', 'password', 'name'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
